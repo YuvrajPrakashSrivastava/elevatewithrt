@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Roster Admin – Organisation console</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1f4f2;--sf:#fff;--ink:#14231f;--mu:#5b6a65;--ln:#d9e0dc;--pri:#0f3d3e;--pi:#fff;--br:#a97a26;--fo:#2f6fbf;--dg:#b3352a;--ok:#2e8b57;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1513;--sf:#15201d;--ink:#e7eeea;--mu:#98a8a1;--ln:#293934;--pri:#6cc3b3;--pi:#08201c;--br:#d4a955;--fo:#7fb0f0;--dg:#ee7b6f;--ok:#5fc48c}}
+:root[data-theme="dark"]{--bg:#0d1513;--sf:#15201d;--ink:#e7eeea;--mu:#98a8a1;--ln:#293934;--pri:#6cc3b3;--pi:#08201c;--br:#d4a955;--fo:#7fb0f0;--dg:#ee7b6f;--ok:#5fc48c}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Plus Jakarta Sans",system-ui,Arial,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque","Trebuchet MS",sans-serif;margin:0}h1{font-size:26px}h2{font-size:18px}h3{font-size:15px}
+button,input,select,textarea{font:inherit;color:inherit}:focus-visible{outline:3px solid var(--fo);outline-offset:2px}
+.brand{display:flex;align-items:center;gap:10px;font:700 19px "Bricolage Grotesque",sans-serif}.key{width:26px;height:26px;border-radius:50% 50% 50% 4px;background:var(--br)}
+.btn{background:var(--pri);color:var(--pi);border:0;border-radius:8px;padding:8px 14px;font-weight:600;cursor:pointer}.btn.sec{background:transparent;color:var(--ink);border:1px solid var(--ln)}.btn.dg{background:transparent;color:var(--dg);border:1px solid var(--dg)}.btn.sm{padding:4px 10px;font-size:13px}
+#login{max-width:400px;margin:12vh auto;padding:0 20px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:16px;margin-bottom:12px;min-width:0}.card h2{margin-bottom:10px}
+.f{display:block;margin-bottom:12px}.f>span{display:block;font-size:13px;font-weight:600;margin-bottom:4px}
+.f input,.f select,.f textarea,.tools input,.tools select{background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:9px 11px;width:100%}
+#shell{display:none;grid-template-columns:230px 1fr;min-height:100vh}
+aside{background:var(--sf);border-right:1px solid var(--ln);padding:18px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+aside .brand{padding:0 8px 14px}
+aside button.n{background:none;border:0;text-align:left;padding:9px 10px;border-radius:8px;cursor:pointer;color:var(--mu);font-weight:600;display:flex;justify-content:space-between}
+aside button.n[aria-current=page]{background:color-mix(in srgb,var(--pri) 12%,var(--sf));color:var(--ink)}
+.bd{background:var(--br);color:#fff;border-radius:99px;padding:0 8px;font-size:12px}
+.sp{flex:1}
+main{padding:24px;max-width:1150px;width:100%;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:18px}.top p{margin:4px 0 0;color:var(--mu)}
+@media(max-width:820px){#shell{grid-template-columns:1fr}aside{position:static;height:auto;flex-direction:row;flex-wrap:wrap;border-right:0;border-bottom:1px solid var(--ln)}aside .brand{width:100%}.sp{display:none}main{padding:16px}}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:12px}
+.kpi{background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:12px 14px;border-left:5px solid var(--c)}.kpi b{display:block;font:700 28px "Bricolage Grotesque",sans-serif;line-height:1.1}.kpi span{color:var(--mu);font-size:13px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:900px){.two{grid-template-columns:1fr}}
+.ov{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:13px;color:var(--mu);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--ln);white-space:nowrap}td{padding:9px 10px;border-bottom:1px solid var(--ln);vertical-align:top}
+.sub{color:var(--mu);font-size:13px}.ref{font-weight:600;white-space:nowrap;border:1px dashed var(--br);border-radius:6px;padding:1px 7px;font-size:12.5px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:99px;font-size:12.5px;font-weight:600;background:color-mix(in srgb,var(--c) 15%,var(--sf));border:1px solid color-mix(in srgb,var(--c) 40%,var(--sf));white-space:nowrap}.pill i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tools input{flex:1;min-width:200px}.tools select{width:auto}
+.acts{display:flex;gap:6px;flex-wrap:wrap}.empty{text-align:center;padding:28px;color:var(--mu)}
+.row{display:grid;grid-template-columns:150px 1fr 30px;gap:10px;align-items:center;font-size:13px;margin:7px 0}.row .t{height:10px;background:var(--ln);border-radius:5px}.row .t div{height:100%;border-radius:5px;background:var(--c)}
+dialog{border:1px solid var(--ln);border-radius:12px;background:var(--sf);color:var(--ink);padding:20px;width:min(440px,92vw)}dialog::backdrop{background:#0008}dialog .acts{justify-content:flex-end;margin-top:8px}
+.log{list-style:none;margin:0;padding:0}.log li{padding:9px 0;border-bottom:1px solid var(--ln);font-size:14px;display:flex;gap:12px}.log span{color:var(--mu);white-space:nowrap;font-size:13px;min-width:130px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--pri);color:var(--pi);padding:10px 18px;border-radius:8px;display:none;font-weight:600;z-index:30}
+</style>
+</head>
+<body>
+<div id="login"><div class="brand" style="margin-bottom:18px"><span class="key"></span>Roster Admin</div>
+<form class="card" id="lf"><h2>Sign in</h2><label class="f"><span>Work email</span><input name="e" type="email" required autocomplete="username"></label><label class="f"><span>Password</span><input name="p" type="password" required autocomplete="current-password"></label><p id="le" class="sub" style="color:var(--dg);min-height:20px;margin:0 0 8px" role="alert"></p><button class="btn" style="width:100%">Sign in</button>
+<p class="sub" style="margin:12px 0 0">Preview build. Use admin@roster.example and Roster@2026. Sign-in runs in this browser only, so connect a real identity provider before real data goes in.</p></form></div>
+<div id="shell"><aside aria-label="Sections"><div class="brand"><span class="key"></span>Roster Admin</div><span id="nv" style="display:contents"></span><span class="sp"></span><button class="n" id="th">Switch theme</button><button class="n" id="so">Sign out</button></aside><main id="v"></main></div>
+<dialog id="md"></dialog><div id="toast" role="status"></div>
+<script>
+const $=(s,e=document)=>e.querySelector(s),$$=(s,e=document)=>[...e.querySelectorAll(s)],DAY=864e5;
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fd=t=>new Date(t).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),ft=t=>fd(t)+' '+new Date(t).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+const ST={pending:['Awaiting approval','#a97a26'],approved:['Approved, unassigned','#5b6b8c'],assigned:['Assigned','#2f6fbf'],sourcing:['Sourcing','#7a5ac8'],shortlisted:['Shortlisted','#1f8a8a'],filled:['Filled','#2e8b57'],rejected:['Rejected','#c0392b'],active:['Active','#2e8b57'],suspended:['Suspended','#8a8f98'],invited:['Invited','#2f6fbf']};
+const OPEN=['approved','assigned','sourcing','shortlisted'],ORDER=['pending','approved','assigned','sourcing','shortlisted','filled','rejected'];
+const pill=s=>`<span class="pill" style="--c:${ST[s][1]}"><i></i>${ST[s][0]}</span>`;
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}};
+function seed(){const now=Date.now(),H=[['Azure Bay Resort','Dubai'],['Palm Crest Hotel','Mumbai'],['Regal Court','Delhi'],['Harbour Grand','Doha'],['Dune View Suites','Riyadh']].map((h,i)=>({id:'H'+(i+1),name:h[0],city:h[1],contact:'HR team',email:'hr@'+h[0].split(' ')[0].toLowerCase()+'.example',status:i==4?'suspended':'active'}));
+const C=[['Gulf Talent Partners','Dubai'],['Bharat Hospitality Search','Mumbai'],['Crescent Recruiters','Doha'],['Summit Staffing','Delhi']].map((c,i)=>({id:'C'+(i+1),name:c[0],city:c[1],contact:'Desk lead',email:'desk@'+c[0].split(' ')[0].toLowerCase()+'.example',status:'active'}));
+const R=[[0,'Executive Chef','Food & Beverage',1,'Priority','pending',1,-1],[1,'Front Office Manager','Rooms Division',1,'Urgent','pending',2,-1],[2,'Director of Sales','Sales & Marketing',1,'Standard','pending',3,-1],[3,'Pastry Chef','Food & Beverage',2,'Standard','approved',6,-1],[0,'Sous Chef','Food & Beverage',2,'Priority','assigned',9,0],[1,'Spa Therapist','Spa & Recreation',4,'Urgent','sourcing',14,1],[3,'Restaurant Manager','Food & Beverage',1,'Standard','shortlisted',21,2],[2,'Revenue Manager','Sales & Marketing',1,'Standard','sourcing',18,3],[0,'Sommelier','Food & Beverage',1,'Standard','filled',60,0],[1,'Financial Controller','Finance',1,'Standard','filled',95,1],[3,'Chef de Partie','Food & Beverage',3,'Priority','filled',48,2],[2,'IT Manager','Security & Admin',1,'Standard','filled',80,3],[0,'Head of Security','Security & Admin',1,'Urgent','rejected',30,-1],[1,'Concierge','Rooms Division',2,'Standard','filled',120,1],[3,'Executive Housekeeper','Rooms Division',1,'Standard','assigned',7,2]];
+const reqs=R.map((r,i)=>({id:'REQ-'+String(i+1).padStart(4,'0'),hotel:H[r[0]].id,title:r[1],dept:r[2],pos:r[3],urg:r[4],status:r[5],cons:r[7]<0?null:C[r[7]].id,created:now-r[6]*DAY,updated:now-Math.max(0,r[6]-(r[5]==='filled'?12:2))*DAY,reason:''}));
+const U=[['Meera Shah','admin@roster.example','Organisation',''],['Omar Aziz','omar@azure.example','Hotel','H1'],['Priya Nair','priya@palm.example','Hotel','H2'],['Layla Hassan','layla@gulf.example','Consultancy','C1'],['Rohan Mehta','rohan@bharat.example','Consultancy','C2']].map((u,i)=>({id:'U'+(i+1),name:u[0],email:u[1],role:u[2],org:u[3],status:'active'}));
+return{hotels:H,cons:C,reqs,users:U,log:[{t:now-DAY,who:'System',msg:'Workspace created with sample data'}]}}
+let D=ld('rs_db',null)||seed(),view='over',flt={q:'',st:'all'};
+const save=()=>{try{localStorage.setItem('rs_db',JSON.stringify(D))}catch(e){}};
+const me=()=>({name:'Meera Shah'});const log=m=>{D.log.unshift({t:Date.now(),who:me().name,msg:m});D.log=D.log.slice(0,200);save()};
+const hn=id=>D.hotels.find(h=>h.id===id)?.name||'–',cn=id=>D.cons.find(c=>c.id===id)?.name||'Not assigned';
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display='none',2500)}
+function modal(title,fields,ok,label='Save'){const d=$('#md');d.innerHTML=`<form><h2 style="margin-bottom:12px">${title}</h2>${fields.map(([n,l,t,o])=>`<label class="f"><span>${l}</span>${t==='select'?`<select name="${n}" required>${o.map(x=>`<option value="${esc(x[0])}">${esc(x[1])}</option>`).join('')}</select>`:t==='textarea'?`<textarea name="${n}" rows="3" required></textarea>`:`<input name="${n}" type="${t||'text'}" required>`}</label>`).join('')}<div class="acts"><button type="button" class="btn sec" id="mc">Cancel</button><button class="btn">${label}</button></div></form>`;
+  $('#mc').onclick=()=>d.close();$('form',d).onsubmit=e=>{e.preventDefault();const v=Object.fromEntries(new FormData(e.target));if(ok(v)!==false)d.close()};d.showModal()}
+const shell=()=>{$('#login').style.display='none';$('#shell').style.display='grid';render()};
+$('#lf').onsubmit=e=>{e.preventDefault();const f=e.target;if(f.e.value.trim().toLowerCase()==='admin@roster.example'&&f.p.value==='Roster@2026'){try{sessionStorage.setItem('rs_in','1')}catch(x){}shell()}else $('#le').textContent='Email or password is incorrect. Check both and try again.'};
+$('#so').onclick=()=>{try{sessionStorage.removeItem('rs_in')}catch(x){}location.reload()};
+$('#th').onclick=()=>{const d=document.documentElement;d.dataset.theme=getComputedStyle(d).getPropertyValue('--bg').trim()==='#0d1513'?'light':'dark'};
+const V=[['over','Overview'],['reqs','Requisitions'],['hotels','Hotels'],['cons','Consultancies'],['users','Users & roles'],['audit','Audit log']];
+function render(){const pend=D.reqs.filter(r=>r.status==='pending').length;$('#nv').innerHTML=V.map(([k,l])=>`<button class="n" data-v="${k}" ${view===k?'aria-current="page"':''}>${l}${k==='reqs'&&pend?`<span class="bd">${pend}</span>`:''}</button>`).join('');
+  $$('#nv button').forEach(b=>b.onclick=()=>{view=b.dataset.v;render();scrollTo(0,0)});({over,reqs,hotels,cons,users,audit})[view]()}
+const T=(h,rows,em)=>`<div class="ov"><table><thead><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows||`<tr><td colspan="${h.length}"><div class="empty">${em}</div></td></tr>`}</tbody></table></div>`;
+const btn=(a,id,l,c='sec')=>`<button class="btn ${c} sm" data-a="${a}" data-id="${id}">${l}</button>`;
+const reqActs=r=>({pending:btn('ap',r.id,'Approve','')+btn('rj',r.id,'Reject','dg'),approved:btn('as',r.id,'Assign'),assigned:btn('as',r.id,'Reassign'),sourcing:btn('as',r.id,'Reassign'),shortlisted:btn('fl',r.id,'Mark filled','')+btn('as',r.id,'Reassign'),filled:'',rejected:''}[r.status]);
+function stats(c){const a=D.reqs.filter(r=>r.cons===c.id),f=a.filter(r=>r.status==='filled');return{n:a.length,f:f.length,open:a.filter(r=>OPEN.includes(r.status)).length,rate:a.length?Math.round(f.length/a.length*100):0,avg:f.length?Math.round(f.reduce((s,r)=>s+r.updated-r.created,0)/f.length/DAY):null}}
+function over(){const R=D.reqs,cnt=s=>R.filter(r=>s.includes(r.status)).length,fill=cnt(['filled']),dec=fill+cnt(['rejected']);
+  const K=[['Awaiting approval',cnt(['pending']),'#a97a26'],['Open requisitions',cnt(OPEN),'#2f6fbf'],['Filled',fill,'#2e8b57'],['Active hotels',D.hotels.filter(h=>h.status==='active').length,'#5b6b8c'],['Active consultancies',D.cons.filter(c=>c.status==='active').length,'#7a5ac8']];
+  const mx=Math.max(1,...ORDER.map(s=>cnt([s])));const pend=R.filter(r=>r.status==='pending').slice(0,5);
+  $('#v').innerHTML=`<div class="top"><div><h1>Overview</h1><p>Everything across hotels, consultancies and candidates, in one place.</p></div></div>
+  <div class="kpis">${K.map(k=>`<div class="kpi" style="--c:${k[2]}"><b>${k[1]}</b><span>${k[0]}</span></div>`).join('')}</div>
+  <div class="two"><div class="card"><h2>Needs your decision</h2>${T(['Role','Hotel',''],pend.map(r=>`<tr><td>${esc(r.title)}<div class="sub">${r.id} · ${r.urg}</div></td><td>${esc(hn(r.hotel))}</td><td><div class="acts">${reqActs(r)}</div></td></tr>`).join(''),'Nothing is waiting. New requisitions from hotels will appear here.')}</div>
+  <div class="card"><h2>Pipeline</h2>${ORDER.map(s=>`<div class="row"><span>${ST[s][0]}</span><div class="t"><div style="--c:${ST[s][1]};width:${cnt([s])/mx*100}%"></div></div><b>${cnt([s])}</b></div>`).join('')}<p class="sub">Approval rate on decided requests: ${dec?Math.round((R.length-cnt(['pending'])-cnt(['rejected']))/(R.length-cnt(['pending']))*100)+'%':'–'}</p></div></div>
+  <div class="card"><h2>Consultancy performance</h2>${T(['Consultancy','Assigned','Open','Filled','Fill rate','Avg days to fill'],D.cons.map(c=>{const s=stats(c);return`<tr><td>${esc(c.name)}</td><td>${s.n}</td><td>${s.open}</td><td>${s.f}</td><td>${s.n?s.rate+'%':'–'}</td><td>${s.avg??'–'}</td></tr>`}).join(''),'No consultancies yet.')}</div>`}
+function reqs(){$('#v').innerHTML=`<div class="top"><div><h1>Requisitions</h1><p>Approve what hotels send, then assign it to a consultancy.</p></div></div>
+  <div class="tools"><input id="q" type="search" aria-label="Search" placeholder="Search by role, hotel or reference" value="${esc(flt.q)}"><select id="fs" aria-label="Status"><option value="all">All statuses</option>${ORDER.map(s=>`<option value="${s}" ${flt.st===s?'selected':''}>${ST[s][0]}</option>`).join('')}</select></div><div class="card" style="padding:0" id="rt"></div>`;
+  $('#q').oninput=e=>{flt.q=e.target.value;rt()};$('#fs').onchange=e=>{flt.st=e.target.value;rt()};rt()}
+function rt(){const q=flt.q.toLowerCase(),L=D.reqs.filter(r=>(flt.st==='all'||r.status===flt.st)&&(!q||(r.title+hn(r.hotel)+r.id).toLowerCase().includes(q))).sort((a,b)=>b.updated-a.updated);
+  $('#rt').innerHTML=T(['Reference','Role','Hotel','Openings','Priority','Consultancy','Status','Updated',''],L.map(r=>`<tr><td><span class="ref">${r.id}</span></td><td>${esc(r.title)}<div class="sub">${esc(r.dept)}</div></td><td>${esc(hn(r.hotel))}</td><td>${r.pos}</td><td>${r.urg}</td><td>${esc(cn(r.cons))}</td><td>${pill(r.status)}${r.reason?`<div class="sub">${esc(r.reason)}</div>`:''}</td><td>${fd(r.updated)}</td><td><div class="acts">${reqActs(r)}</div></td></tr>`).join(''),'No requisitions match these filters.')}
+function org(kind){const H=kind==='hotels',L=H?D.hotels:D.cons;
+  $('#v').innerHTML=`<div class="top"><div><h1>${H?'Hotels':'Consultancies'}</h1><p>${H?'Properties that post role requirements.':'Partners who supply candidates.'}</p></div><button class="btn" data-a="add${kind}">${H?'Add hotel':'Add consultancy'}</button></div><div class="card" style="padding:0">${T(H?['Hotel','City','Contact','Requisitions','Status','']:['Consultancy','City','Contact','Assigned','Fill rate','Status',''],L.map(o=>H?`<tr><td>${esc(o.name)}</td><td>${esc(o.city)}</td><td>${esc(o.email)}</td><td>${D.reqs.filter(r=>r.hotel===o.id).length}</td><td>${pill(o.status)}</td><td>${btn('to'+kind,o.id,o.status==='active'?'Suspend':'Reactivate',o.status==='active'?'dg':'')}</td></tr>`:`<tr><td>${esc(o.name)}</td><td>${esc(o.city)}</td><td>${esc(o.email)}</td><td>${stats(o).n}</td><td>${stats(o).n?stats(o).rate+'%':'–'}</td><td>${pill(o.status)}</td><td>${btn('to'+kind,o.id,o.status==='active'?'Suspend':'Reactivate',o.status==='active'?'dg':'')}</td></tr>`).join(''),'None yet.')}</div>`}
+const hotels=()=>org('hotels'),cons=()=>org('cons');
+function users(){$('#v').innerHTML=`<div class="top"><div><h1>Users & roles</h1><p>Organisation admins have full access. Hotel and consultancy users only see their own work.</p></div><button class="btn" data-a="addusers">Invite user</button></div><div class="card" style="padding:0">${T(['Name','Email','Role','Belongs to','Status',''],D.users.map(u=>`<tr><td>${esc(u.name)}</td><td>${esc(u.email)}</td><td>${u.role}</td><td>${esc(u.role==='Hotel'?hn(u.org):u.role==='Consultancy'?cn(u.org):'Roster')}</td><td>${pill(u.status==='invited'?'invited':u.status)}</td><td>${u.role==='Organisation'?'':btn('tousers',u.id,u.status==='suspended'?'Reactivate':'Suspend',u.status==='suspended'?'':'dg')}</td></tr>`).join(''),'No users.')}</div>`}
+function audit(){$('#v').innerHTML=`<div class="top"><div><h1>Audit log</h1><p>Who did what, newest first. Keeps the last 200 actions in this browser.</p></div></div><div class="card"><ul class="log">${D.log.map(l=>`<li><span>${ft(l.t)}</span><div><b>${esc(l.who)}</b> ${esc(l.msg)}</div></li>`).join('')}</ul></div>`}
+function setS(r,s,m){r.status=s;r.updated=Date.now();log(m+' '+r.id+' ('+r.title+')');save();toast(m);render()}
+const A={
+ap:id=>{const r=D.reqs.find(x=>x.id===id);setS(r,'approved','Approved')},
+fl:id=>{const r=D.reqs.find(x=>x.id===id);setS(r,'filled','Marked filled')},
+rj:id=>{const r=D.reqs.find(x=>x.id===id);modal('Reject '+esc(r.id),[['why','Reason shown to the hotel','textarea']],v=>{r.reason=v.why;setS(r,'rejected','Rejected')},'Reject')},
+as:id=>{const r=D.reqs.find(x=>x.id===id),o=D.cons.filter(c=>c.status==='active').map(c=>[c.id,c.name]);if(!o.length)return toast('Add an active consultancy first');modal('Assign '+esc(r.title),[['c','Consultancy','select',o]],v=>{r.cons=v.c;setS(r,r.status==='approved'?'assigned':r.status,'Assigned to '+cn(v.c)+':')},'Assign')},
+addhotels:()=>modal('Add hotel',[['name','Hotel name'],['city','City'],['email','HR contact email','email']],v=>{const id='H'+(D.hotels.length+1);D.hotels.push({id,name:v.name.trim(),city:v.city.trim(),contact:'HR team',email:v.email,status:'active'});log('Added hotel '+v.name);save();toast('Hotel added');render()}),
+addcons:()=>modal('Add consultancy',[['name','Consultancy name'],['city','City'],['email','Desk contact email','email']],v=>{const id='C'+(D.cons.length+1);D.cons.push({id,name:v.name.trim(),city:v.city.trim(),contact:'Desk lead',email:v.email,status:'active'});log('Added consultancy '+v.name);save();toast('Consultancy added');render()}),
+addusers:()=>modal('Invite user',[['name','Full name'],['email','Work email','email'],['role','Role','select',[['Hotel','Hotel'],['Consultancy','Consultancy'],['Organisation','Organisation admin']]],['org','Belongs to','select',[['','Roster (admins only)'],...D.hotels.map(h=>[h.id,'Hotel: '+h.name]),...D.cons.map(c=>[c.id,'Consultancy: '+c.name])]]],v=>{if(D.users.some(u=>u.email.toLowerCase()===v.email.toLowerCase())){toast('That email already has an account');return false}
+  const ok=v.role==='Organisation'?!v.org:v.role==='Hotel'?v.org.startsWith('H'):v.org.startsWith('C');if(!ok){toast('Choose an organisation that matches the role');return false}
+  D.users.push({id:'U'+(D.users.length+1),name:v.name.trim(),email:v.email.trim(),role:v.role,org:v.org,status:'invited'});log('Invited '+v.email+' as '+v.role);save();toast('Invitation recorded');render()},'Send invite'),
+tohotels:id=>tog(D.hotels,id,'hotel'),tocons:id=>tog(D.cons,id,'consultancy'),tousers:id=>tog(D.users,id,'user')};
+function tog(L,id,w){const o=L.find(x=>x.id===id);o.status=o.status==='suspended'?'active':'suspended';log((o.status==='active'?'Reactivated ':'Suspended ')+w+' '+o.name);save();toast(o.status==='active'?'Reactivated':'Suspended');render()}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b)A[b.dataset.a]?.(b.dataset.id)});
+try{if(sessionStorage.getItem('rs_in')==='1')shell()}catch(e){}
+</script>
+</body>
+</html>
